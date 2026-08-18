@@ -1,5 +1,7 @@
 name: research-brief
-description: Gather sources and brief on a synchronization/organism topic
+description:
+
+tags: [research, source, find, brief, facts]
 steps:
   - name: Sources
     prompt: "Find 3 credible sources related to: {input}. List titles and key facts."

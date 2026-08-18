@@ -1,5 +1,7 @@
 name: redteam-scan
-description: Adversarial risk scan of a proposed change
+description:
+
+tags: [risk, security, attack, redteam, threat, audit]
 steps:
   - name: Risks
     prompt: "List risks, failure modes, and security holes (with severity) for: {input}"

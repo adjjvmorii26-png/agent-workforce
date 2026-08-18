@@ -96,8 +96,9 @@ Run recipes to produce reports:
 
 ```bash
 python3 -m ixpansion recipes                                   # catalog
-python3 -m ixpansion run "Launch a rocket to Mars." --mock     # offline run
-python3 -m ixpansion run "your input"                          # live (OPENAI_API_KEY)
+python3 -m ixpansion route "<input>"                           # recommended recipe
+python3 -m ixpansion run "your input" --mock                   # offline run
+python3 -m ixpansion evaluate "your input" --mock              # run + LLM judge
 ```
 
 Recipe YAML lives in `ixpansion/content_output/recipes/`, reports go to

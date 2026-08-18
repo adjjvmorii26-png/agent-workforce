@@ -9,6 +9,7 @@ from .core.engine import Engine
 from .core.recipe import Recipe
 from .services.llm import make_provider
 from .core.evaluate import evaluate_report
+from .core.router import route
 
 RECIPES = Path(__file__).parent / "content_output" / "recipes"
 REPORTS = Path(__file__).parent / "content_output" / "reports"
@@ -27,6 +28,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("recipes", help="list catalog")
     sub.add_parser("reports", help="list generated reports")
 
+    rt = sub.add_parser("route", help="recommend a recipe for an input")
+    rt.add_argument("input")
+
     ev = sub.add_parser("evaluate", help="run a recipe and LLM-judge the report")
     ev.add_argument("input", help="raw input text (quote it)")
     ev.add_argument("--recipe", default="summary")
@@ -38,6 +42,10 @@ def main(argv: list[str] | None = None) -> int:
         for p in sorted(RECIPES.glob("*.yaml")):
             r = Recipe.load(p)
             print(f"{r.name:<16} {r.description} ({len(r.steps)} steps)")
+        return 0
+    if args.cmd == "route":
+        r = route(args.input)
+        print(f"route: {r.recipe.name}  ({r.label()})")
         return 0
     if args.cmd == "reports":
         for p in sorted(REPORTS.glob("**/*.md")):

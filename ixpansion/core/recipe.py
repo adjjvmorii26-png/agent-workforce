@@ -25,6 +25,7 @@ class Recipe:
     name: str
     description: str = ""
     steps: list[RecipeStep] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
     source: str = ""
 
     @classmethod
@@ -46,7 +47,13 @@ class Recipe:
             raise RecipeError(f"recipe {p} has invalid steps: {exc}") from exc
         if not steps:
             raise RecipeError(f"recipe {p} has no steps")
-        return cls(name=name, description=str(data.get("description", "")), steps=steps, source=str(p))
+        return cls(
+            name=name,
+            description=str(data.get("description", "")),
+            steps=steps,
+            tags=[str(t) for t in (data.get("tags") or [])],
+            source=str(p),
+        )
 
     def catalog_header(self) -> str:
         return f"# {self.name} — {self.description}".rstrip()

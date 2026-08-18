@@ -1,5 +1,7 @@
 name: release-note
-description: Changelog + release checklist for a version bump
+description:
+
+tags: [release, changelog, version, publish, deploy]
 steps:
   - name: Changelog
     prompt: "Write a user-facing changelog for these changes: {input}"

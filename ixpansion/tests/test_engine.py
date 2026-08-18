@@ -60,3 +60,13 @@ class TestEvaluate(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRouter(unittest.TestCase):
+    def test_route_picks_themed_recipe(self):
+        from ixpansion.core.router import route
+
+        self.assertEqual(route("summarize this brief overview").recipe.name, "summary")
+        self.assertEqual(route("security risk threat audit").recipe.name, "redteam-scan")
+        self.assertEqual(route("synchronize organisms with an html map").recipe.name, "organism-sync")
+        self.assertEqual(route("release changelog version publish").recipe.name, "release-note")
