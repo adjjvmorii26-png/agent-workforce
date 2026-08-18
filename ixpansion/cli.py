@@ -31,6 +31,11 @@ def main(argv: list[str] | None = None) -> int:
     rt = sub.add_parser("route", help="recommend a recipe for an input")
     rt.add_argument("input")
 
+    au = sub.add_parser("auto", help="route + run a batch of inputs")
+    au.add_argument("inputs", nargs="+", help="one or more raw inputs")
+    au.add_argument("--mock", action="store_true")
+    au.add_argument("--out", default=str(REPORTS))
+
     ev = sub.add_parser("evaluate", help="run a recipe and LLM-judge the report")
     ev.add_argument("input", help="raw input text (quote it)")
     ev.add_argument("--recipe", default="summary")
@@ -43,6 +48,17 @@ def main(argv: list[str] | None = None) -> int:
             r = Recipe.load(p)
             print(f"{r.name:<16} {r.description} ({len(r.steps)} steps)")
         return 0
+    if args.cmd == "auto":
+        from .core.router import route, load_catalog
+
+        catalog = load_catalog()
+        engine = Engine(make_provider(mock=args.mock), output_dir=args.out)
+        for i, inp in enumerate(args.inputs, 1):
+            picked = route(inp, catalog).recipe
+            result = engine.run(picked, inp, out_name=f"auto-{i}")
+            print(f"auto[{i}] {inp[:40]:<42} -> {picked.name} -> {result.report_path}")
+        return 0
+
     if args.cmd == "route":
         r = route(args.input)
         print(f"route: {r.recipe.name}  ({r.label()})")

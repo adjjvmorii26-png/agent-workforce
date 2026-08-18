@@ -103,3 +103,11 @@ python3 -m ixpansion evaluate "your input" --mock              # run + LLM judge
 
 Recipe YAML lives in `ixpansion/content_output/recipes/`, reports go to
 `ixpansion/content_output/reports/`. Experiment backlog: `ixpansion/docs/experiments.md`.
+
+## Command zoo (extra life-forms)
+- `workforce evolve` — Breeding Tank: evolve fitter agents across generations.
+- `workforce splice <a> <b>` — chimera agent hybridizing two specialists' DNA.
+- `workforce hive "<question>" [--mock]` — 3 specialists answer, then consensus.
+- `workforce oracle` — forecast from run history (accept rate, duration, score).
+- `workforce pulse [--no-commit]` — autopilot heartbeat: evolve + record `WORKSPACE_PULSE.md`.
+- `ixpansion auto "<input>" ... [--mock]` — route + batch-run inputs to their best recipes.

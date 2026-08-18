@@ -61,6 +61,15 @@ def _build_parser() -> argparse.ArgumentParser:
     evolve.add_argument("--gens", type=int, default=3, help="generations")
     evolve.add_argument("--mock", action="store_true", help="deterministic offline fitness")
     evolve.add_argument("--out", default="data/evolution", help="report dir")
+    splice = sub.add_parser("splice", help="create a chimera agent from two specialists")
+    splice.add_argument("a", choices=["planner","researcher","coder","reviewer","summarizer","designer","qa","docsmith","critic","devops"])
+    splice.add_argument("b", choices=["planner","researcher","coder","reviewer","summarizer","designer","qa","docsmith","critic","devops"])
+    hive = sub.add_parser("hive", help="multiple specialists answer one question, then consensus")
+    hive.add_argument("question")
+    hive.add_argument("--mock", action="store_true")
+    oracle = sub.add_parser("oracle", help="forecast from run history")
+    pulse = sub.add_parser("pulse", help="autopilot heartbeat (evolve + record)")
+    pulse.add_argument("--no-commit", action="store_true")
     status = sub.add_parser("status", help="show past runs")
     status.add_argument("run_id", nargs="?", default=None)
 
@@ -90,6 +99,58 @@ def _overrides(args: argparse.Namespace) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
+
+    if args.command == "splice":
+        from .splice import splice as make_chimera
+
+        from .llm import build_provider as _bp
+        from .tools import build_default_registry as _reg
+        from .memory import Memory as _Mem
+        from .bus import Bus as _Bus
+
+        cfg = load_config()
+        reg = _reg(cfg)
+        mem = _Mem(":memory:")
+        bus = _Bus(workers=1)
+        chimera = make_chimera(args.a, args.b, _bp(cfg.provider, cfg.llm), reg, mem, bus, "splice")
+        print(f"chimera: {chimera.name} — {chimera.role}")
+        print(f"caps: {', '.join(chimera.capabilities)}")
+        print(f"DNA preview: {chimera.system_prompt()[:300]}")
+        bus.shutdown()
+        return 0
+
+    if args.command == "hive":
+        from .hive import run_hive
+
+        from .llm import build_provider as _bp, MockProvider as _Mk
+        from .tools import build_default_registry as _reg
+        from .memory import Memory as _Mem
+        from .bus import Bus as _Bus
+
+        cfg = load_config()
+        provider = _Mk() if args.mock else _bp(cfg.provider, cfg.llm)
+        result = run_hive(args.question, provider, _reg(cfg), _Mem(":memory:"), _Bus(workers=1), "hive")
+        print(f"hive: {len(result['views'])} views")
+        for name, view in result["views"].items():
+            print(f"  [{name}] {view[:70]}...")
+        print("consensus:", result["consensus"][:200])
+        return 0
+
+    if args.command == "oracle":
+        import os as _os
+        from .oracle import forecast
+        from .memory import Memory as _Mem
+
+        cfg = load_config()
+        _os.makedirs(_os.path.dirname(cfg.memory_db) or ".", exist_ok=True)
+        print(forecast(_Mem(cfg.memory_db)))
+        return 0
+
+    if args.command == "pulse":
+        from .pulse import pulse as _pulse
+
+        print(_pulse(commit=not args.no_commit))
+        return 0
 
     if args.command == "evolve":
         from .evolution import Evolver
