@@ -1,5 +1,17 @@
 # Workforce
 
+> Central hub for the agent workforce: orchestrator, specialists, tooling, and docs in one repo.
+> **Connectors:** workspace `workforce.yaml` (repo root sandbox) · GitHub (pending auth)
+
+## Repository layout
+```
+workforce/        the package (orchestrator, agents, llm, tools, memory, bus, cli)
+tests/            offline unit + end-to-end tests
+workspace/        default sandbox for library-only use
+workforce.yaml    workspace connector config (sandbox = repo root)
+pyproject.toml    packaging / `workforce` console script
+```
+
 A finished, self-contained multi-agent workforce in ~2k lines of Python (stdlib + PyYAML only).
 
 **Team:** `planner` (goal → task graph) · `researcher` (web facts/sources) · `coder` (sandboxed deliverable) · `reviewer` (pass/revise quality gate) · `summarizer` (final report).
