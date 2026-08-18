@@ -1,0 +1,7 @@
+name: research-brief
+description: Gather sources and brief on a synchronization/organism topic
+steps:
+  - name: Sources
+    prompt: "Find 3 credible sources related to: {input}. List titles and key facts."
+  - name: Brief
+    prompt: "Write a 3-paragraph brief synthesizing the sources about: {prev}"

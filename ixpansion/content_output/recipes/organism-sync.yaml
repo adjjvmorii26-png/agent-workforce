@@ -1,0 +1,7 @@
+name: organism-sync
+description: Produce a self-contained HTML map of synchronizing organisms
+steps:
+  - name: Model
+    prompt: "Describe 4 'organisms' (subsystems) and how they synchronize around: {input}"
+  - name: Visual
+    prompt: "Produce a self-contained HTML page (inline CSS/JS, no CDNs) visualizing the synchronization from: {prev}"

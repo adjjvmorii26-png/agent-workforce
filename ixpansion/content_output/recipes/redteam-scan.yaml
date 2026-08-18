@@ -1,0 +1,7 @@
+name: redteam-scan
+description: Adversarial risk scan of a proposed change
+steps:
+  - name: Risks
+    prompt: "List risks, failure modes, and security holes (with severity) for: {input}"
+  - name: Mitigations
+    prompt: "For each risk above, give a concrete mitigation. {prev}"

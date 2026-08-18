@@ -16,6 +16,12 @@ artifact in `content_output/`.
 
 ---
 
+
+## Progress
+- **X-01** done — recipe engine + CLI implemented (committed).
+- **X-02** done — recipe catalog of 5 reusable recipes committed (`summary`, `research-brief`, `organism-sync`, `redteam-scan`, `release-note`).
+- Next up: **X-03** LLM-judge evaluation harness.
+
 ## Principles
 
 1. **One hypothesis per experiment** — change one variable at a time.
