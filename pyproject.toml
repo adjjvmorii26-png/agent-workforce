@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "workforce"
 version = "0.1.0"
-description = "A finished, self-contained agent workforce: orchestrator, specialized agents, message bus, memory, tools, CLI, and HTTP API."
+description = "Central hub: agent workforce + IXPANSION recipe-based experiment platform."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -16,7 +16,7 @@ dependencies = ["PyYAML>=6.0"]
 workforce = "workforce.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["workforce*"]
+include = ["workforce*", "ixpansion*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

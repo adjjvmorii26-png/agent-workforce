@@ -88,3 +88,16 @@ The default `workforce.yaml` sets `tools.sandbox: .`, so agents read/write the r
 - **Memory:** research findings are stored as long-term facts (`fact:research:<sha>`), so repeated runs on the same goal reuse prior knowledge.
 - **Providers:** any OpenAI-compatible `/chat/completions` endpoint; no SDK dependency (stdlib `urllib`).
 - **Mock mode:** deterministic offline provider — reviewer asks for one revision, then accepts — so the full loop can be demonstrated without an API key.
+
+## IXPANSION (in this hub)
+
+Run recipes to produce reports:
+
+```bash
+python3 -m ixpansion recipes                                   # catalog
+python3 -m ixpansion run "Launch a rocket to Mars." --mock     # offline run
+python3 -m ixpansion run "your input"                          # live (OPENAI_API_KEY)
+```
+
+Recipe YAML lives in `ixpansion/content_output/recipes/`, reports go to
+`ixpansion/content_output/reports/`. Experiment backlog: `ixpansion/docs/experiments.md`.
