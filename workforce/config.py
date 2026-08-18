@@ -200,8 +200,6 @@ def load_config(
     cfg.tools.sandbox = os.path.abspath(cfg.tools.sandbox)
     cfg.artifact_dir = os.path.abspath(cfg.artifact_dir)
     cfg.memory_db = os.path.abspath(cfg.memory_db)
-    os.makedirs(cfg.artifact_dir, exist_ok=True)
-    os.makedirs(os.path.dirname(cfg.memory_db) or ".", exist_ok=True)
     return cfg
 
 

@@ -73,6 +73,10 @@ class Workforce:
         bus: Bus | None = None,
     ) -> None:
         self.config = config or WorkforceConfig()
+        import os
+
+        os.makedirs(self.config.artifact_dir, exist_ok=True)
+        os.makedirs(os.path.dirname(self.config.memory_db) or ".", exist_ok=True)
         self.bus = bus or Bus(workers=max(1, self.config.workers + 2))
         self.provider = provider or build_provider(self.config.provider, self.config.llm)
         self.memory = memory or Memory(self.config.memory_db)
