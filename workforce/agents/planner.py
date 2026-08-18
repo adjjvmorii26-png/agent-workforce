@@ -25,6 +25,10 @@ class PlannerAgent(BaseAgent):
             "- docs: write documentation, READMEs, guides\n"
             "- redteam: adversarial critique and risk analysis\n"
             "- devops: releases, CI, deployment readiness\n"
+            "- recruit: spawn a purpose-built agent for novel work\n"
+            "- architecture: design system architecture\n"
+            "- analytics: quantitative analysis and benchmarks\n"
+            "- curate: maintain knowledge, docs, and dashboards\n"
             "- summarize: write the final report\n"
             "Use 3-6 tasks. IDs must be unique and depends_on must reference earlier ids."
         )

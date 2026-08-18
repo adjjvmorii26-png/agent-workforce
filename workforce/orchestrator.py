@@ -16,7 +16,7 @@ from .bus import Bus, Event
 from .config import WorkforceConfig
 from .llm import LLMProvider, build_provider
 from .memory import Memory
-from .models import Task, TaskStatus, parse_tasks
+from .models import Task, TaskStatus, extract_json
 from .tools import build_default_registry
 from .tracing import Tracer
 
@@ -261,6 +261,8 @@ class Workforce:
         lock: threading.Lock,
     ) -> Task:
         agent_name = resolve_agent_name(task.capability)
+        if agent_name not in self._team and task.capability in self._team:
+            agent_name = task.capability  # dynamic agents route by their own name
         feedback: str | None = None
         last_review_comments = ""
 
@@ -284,6 +286,8 @@ class Workforce:
             context = AgentContext(goal=goal, task=task, feedback=feedback, facts=facts)
             result = agent.run(context)
             task.output = result.output
+            if agent_name == "recruiter":
+                self._adopt_recruit(task, run_id)
             self._upsert(task, run_id)
 
             if task.capability.lower() in REVIEW_FREE:
@@ -338,6 +342,20 @@ class Workforce:
             tracer.event("task_failed", task_id=task.id)
 
         return task
+
+    def _adopt_recruit(self, task: Task, run_id: str) -> None:
+        """Register a purpose-built agent spawned by the recruiter."""
+        from .agents.factory import materialize_spec
+
+        try:
+            spec = extract_json(task.output) or {}
+            if spec.get("name") and spec["name"] not in self._team:
+                self._team[spec["name"]] = materialize_spec(
+                    spec, self.provider, self.registry, self.memory, self.bus, run_id
+                )
+                task.output = '[recruited agent: ' + str(spec["name"]) + ' | ' + str(spec.get("role", "")) + ']\n' + task.output
+        except Exception:
+            pass  # non-JSON recruiter output is left as-is
 
     def _review(self, task: Task, goal: str, run_id: str, tracer: Tracer, facts: dict[str, Any]) -> tuple[str, str, float]:
         reviewer = self._team["reviewer"]

@@ -60,6 +60,8 @@ def _build_parser() -> argparse.ArgumentParser:
     status.add_argument("run_id", nargs="?", default=None)
 
     init_ = sub.add_parser("init", help="write workforce.yaml and .env.example")
+    clean_ = sub.add_parser("clean", help="delete runtime artifacts (data/, __pycache__, generated reports)")
+    clean_.add_argument("--yes", action="store_true", help="skip confirmation")
     return parser
 
 
@@ -97,6 +99,29 @@ def main(argv: list[str] | None = None) -> int:
             with open(path, "w", encoding="utf-8") as fh:
                 fh.write(text)
             print(f"wrote {path}")
+        return 0
+
+    if args.command == "clean":
+        import pathlib as _pl, shutil as _sh
+        targets = ["data", "ixpansion/content_output/reports"]
+        removed = 0
+        for t in targets:
+            root = _pl.Path(t)
+            if not root.exists():
+                continue
+            has_user_files = t == "ixpansion/content_output/reports"
+            for child in list(root.iterdir()):
+                if has_user_files and child.name == ".gitkeep":
+                    continue
+                if child.is_dir():
+                    _sh.rmtree(child)
+                else:
+                    child.unlink()
+                removed += 1
+        for pyc in list(_pl.Path(".").rglob("__pycache__")):
+            _sh.rmtree(pyc)
+            removed += 1
+        print(f"clean: removed {removed} runtime items")
         return 0
 
     if args.command == "status":

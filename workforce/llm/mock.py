@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .base import LLMResponse, ToolCall
+from .base import LLMResponse
 
 
 def _system(messages: list[dict[str, Any]]) -> str:
@@ -17,14 +17,6 @@ def _system(messages: list[dict[str, Any]]) -> str:
 
 def _all_text(messages: list[dict[str, Any]]) -> str:
     return "\n".join(m.get("content", "") or "" for m in messages)
-
-
-def _find_verdict(text: str) -> str | None:
-    try:
-        obj = json.loads(text[text.find("{"): text.rfind("}") + 1])
-    except Exception:
-        return None
-    return obj.get("verdict")
 
 
 class MockProvider:
@@ -62,8 +54,28 @@ class MockProvider:
             return self._review(system, text)
         if "summarizer" in lower or "summarize" in lower:
             return self._summary(text)
+        if "recruiter" in lower:
+            return self._recruit(text)
 
         return LLMResponse(text=f"[mock] processed request: {text[:200]}")
+
+    def _recruit(self, text: str) -> LLMResponse:
+        return LLMResponse(
+            text=json.dumps(
+                {
+                    "name": "localizer",
+                    "role": "localization specialist",
+                    "capabilities": ["localize", "i18n", "translate"],
+                    "system_prompt": (
+                        "You are a LOCALIZER. Adapt content to target locales: "
+                        "translate text, preserve tone, and flag cultural issues. "
+                        "Use file tools when asked."
+                    ),
+                    "tool_names": ["read_file", "write_file", "list_files"],
+                },
+                indent=2,
+            )
+        )
 
     # ------------------------------------------------------------------ #
     def _plan(self, text: str) -> LLMResponse:

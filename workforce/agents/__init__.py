@@ -11,6 +11,10 @@ from .qa import QAAgent
 from .docsmith import DocsmithAgent
 from .critic import CriticAgent
 from .devops import DevopsAgent
+from .factory import RecruiterAgent, DynamicAgent, materialize_spec
+from .architect import ArchitectAgent
+from .analyst import AnalystAgent
+from .curator import CuratorAgent
 
 TEAM = {
     "plan": PlannerAgent,
@@ -23,6 +27,10 @@ TEAM = {
     "docs": DocsmithAgent,
     "redteam": CriticAgent,
     "devops": DevopsAgent,
+    "recruit": RecruiterAgent,
+    "architecture": ArchitectAgent,
+    "analytics": AnalystAgent,
+    "curate": CuratorAgent,
 }
 
 CAPABILITY_TO_AGENT = {}
@@ -65,4 +73,10 @@ __all__ = [
     "DocsmithAgent",
     "CriticAgent",
     "DevopsAgent",
+    "RecruiterAgent",
+    "DynamicAgent",
+    "materialize_spec",
+    "ArchitectAgent",
+    "AnalystAgent",
+    "CuratorAgent",
 ]

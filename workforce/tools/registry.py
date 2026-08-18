@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 import html
-import json
 import pathlib
 import re
-import shlex
 import subprocess
 import urllib.parse
 import urllib.request
