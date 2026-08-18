@@ -56,6 +56,11 @@ def _build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--mock", action="store_true")
 
     agents = sub.add_parser("agents", help="list the workforce team")
+    evolve = sub.add_parser("evolve", help="breed improved agents (evolution loop)")
+    evolve.add_argument("--pop", type=int, default=6, help="population size")
+    evolve.add_argument("--gens", type=int, default=3, help="generations")
+    evolve.add_argument("--mock", action="store_true", help="deterministic offline fitness")
+    evolve.add_argument("--out", default="data/evolution", help="report dir")
     status = sub.add_parser("status", help="show past runs")
     status.add_argument("run_id", nargs="?", default=None)
 
@@ -85,6 +90,13 @@ def _overrides(args: argparse.Namespace) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
+
+    if args.command == "evolve":
+        from .evolution import Evolver
+
+        result = Evolver(population=args.pop, generations=args.gens, mock=args.mock).run(out_dir=args.out)
+        print(result.summary())
+        return 0
 
     if args.command == "agents":
         for name, cls in AGENT_LOOKUP.items():
