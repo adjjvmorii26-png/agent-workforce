@@ -67,6 +67,9 @@ for t in result.tasks:
 w.shutdown()
 ```
 
+## Workspace connection
+The default `workforce.yaml` sets `tools.sandbox: .`, so agents read/write the repository itself (`.git` and `.env` are protected).
+
 ## Notes
 
 - **Security:** file tools resolve paths inside the sandbox and reject escapes; shell execution is disabled by default.

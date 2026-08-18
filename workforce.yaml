@@ -1,0 +1,12 @@
+provider: openai
+llm:
+  model: gpt-4o-mini
+  base_url: https://api.openai.com/v1
+workers: 3
+max_attempts: 3
+tools:
+  sandbox: .
+  file_ops: true
+  search_web: true
+  fetch_url: true
+  shell: false

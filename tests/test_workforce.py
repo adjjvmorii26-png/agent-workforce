@@ -59,6 +59,8 @@ class TestTools(unittest.TestCase):
                 reg.read_file("../outside.txt")
             self.assertIn("Wrote", reg.write_file("a/b.txt", "hi"))
             self.assertIn("a/b.txt", reg.list_files(recursive=True))
+            with self.assertRaises(SandboxError):
+                reg.write_file(".git/config", "bad")
 
 
 class TestOrchestratorMock(unittest.TestCase):

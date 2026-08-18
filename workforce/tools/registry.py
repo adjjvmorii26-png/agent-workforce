@@ -19,6 +19,9 @@ class SandboxError(Exception):
     pass
 
 
+_FORBIDDEN = (".git", ".env")  # never expose or mutate these from the workspace
+
+
 def _resolve_in_sandbox(sandbox: str, rel: str) -> pathlib.Path:
     root = pathlib.Path(sandbox).resolve()
     candidate = (root / rel).resolve()
@@ -191,12 +194,14 @@ class ToolRegistry:
     # ------------------------------------------------------------------ #
     def read_file(self, rel: str) -> str:
         safe = _resolve_in_sandbox(self.config.tools.sandbox, rel)
+        self._guard(safe)
         if not safe.is_file():
             return f"ERROR: file not found: {rel}"
         return safe.read_text(encoding="utf-8", errors="replace")[:20_000]
 
     def write_file(self, rel: str, content: str) -> str:
         safe = _resolve_in_sandbox(self.config.tools.sandbox, rel)
+        self._guard(safe)
         safe.parent.mkdir(parents=True, exist_ok=True)
         safe.write_text(content, encoding="utf-8")
         return f"Wrote {safe} ({len(content)} chars)"
@@ -230,6 +235,11 @@ class ToolRegistry:
         return out or f"(exit {proc.returncode})"
 
     # ------------------------------------------------------------------ #
+    def _guard(self, path: "pathlib.Path") -> None:
+        for part in path.relative_to(self.config.tools.sandbox).parts:
+            if part in _FORBIDDEN:
+                raise SandboxError(f"path touches protected entry: {part!r}")
+
     @staticmethod
     def _arg(args: dict[str, Any], key: str, default: Any = "") -> Any:
         return args.get(key, default)
