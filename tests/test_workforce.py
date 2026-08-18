@@ -9,9 +9,28 @@ from workforce.config import load_config
 from workforce.memory import Memory
 from workforce.bus import Bus, Event
 from workforce.models import extract_json, parse_review, parse_tasks
+from workforce.llm import MockProvider
 from workforce.orchestrator import Workforce
 from workforce.tools import SandboxError, build_default_registry
 from workforce.config import WorkforceConfig
+
+class TestTeam(unittest.TestCase):
+    def test_all_agents_build(self):
+        from workforce.config import WorkforceConfig
+        from workforce.agents import build_team, AGENT_LOOKUP
+        cfg = WorkforceConfig()
+        team = build_team(MockProvider(), build_default_registry(cfg), Memory(""), Bus(workers=1), "x")
+        self.assertIn("designer", team)
+        self.assertIn("qa", team)
+        self.assertIn("docsmith", team)
+        self.assertIn("critic", team)
+        self.assertIn("devops", team)
+        self.assertEqual(len(AGENT_LOOKUP), 10)
+
+    def test_routing(self):
+        from workforce.agents import resolve_agent_name
+        for cap, agent in [("design","designer"),("redteam","critic"),("devops","devops"),("test","qa"),("docs","docsmith")]:
+            self.assertEqual(resolve_agent_name(cap), agent)
 
 
 class TestModels(unittest.TestCase):

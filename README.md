@@ -5,11 +5,13 @@
 
 ## Repository layout
 ```
-workforce/        the package (orchestrator, agents, llm, tools, memory, bus, cli)
+workforce/        the package (orchestrator, 10 agents, llm, tools, memory, bus, cli)
+ixpansion/        IXPANSION recipe experiment platform (X-01 engine + CLI)
 tests/            offline unit + end-to-end tests
 workspace/        default sandbox for library-only use
 workforce.yaml    workspace connector config (sandbox = repo root)
-pyproject.toml    packaging / `workforce` console script
+dashboard.html    self-contained hub dashboard (no external requests)
+pyproject.toml    packaging / `workforce` and `ixpansion` console scripts
 ```
 
 A finished, self-contained multi-agent workforce in ~2k lines of Python (stdlib + PyYAML only).
@@ -89,7 +91,6 @@ The default `workforce.yaml` sets `tools.sandbox: .`, so agents read/write the r
 - **Providers:** any OpenAI-compatible `/chat/completions` endpoint; no SDK dependency (stdlib `urllib`).
 - **Mock mode:** deterministic offline provider — reviewer asks for one revision, then accepts — so the full loop can be demonstrated without an API key.
 
-## IXPANSION (in this hub)
 
 Run recipes to produce reports:
 

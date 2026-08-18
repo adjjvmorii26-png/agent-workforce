@@ -6,6 +6,11 @@ from .researcher import ResearcherAgent
 from .coder import CoderAgent
 from .reviewer import ReviewerAgent
 from .summarizer import SummarizerAgent
+from .designer import DesignerAgent
+from .qa import QAAgent
+from .docsmith import DocsmithAgent
+from .critic import CriticAgent
+from .devops import DevopsAgent
 
 TEAM = {
     "plan": PlannerAgent,
@@ -13,6 +18,11 @@ TEAM = {
     "code": CoderAgent,
     "review": ReviewerAgent,
     "summarize": SummarizerAgent,
+    "design": DesignerAgent,
+    "test": QAAgent,
+    "docs": DocsmithAgent,
+    "redteam": CriticAgent,
+    "devops": DevopsAgent,
 }
 
 CAPABILITY_TO_AGENT = {}
@@ -50,4 +60,9 @@ __all__ = [
     "CoderAgent",
     "ReviewerAgent",
     "SummarizerAgent",
+    "DesignerAgent",
+    "QAAgent",
+    "DocsmithAgent",
+    "CriticAgent",
+    "DevopsAgent",
 ]

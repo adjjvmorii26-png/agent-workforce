@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hub — Agent Workforce × IXPANSION</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#121a2e; --panel2:#0f1626; --ink:#e8edf7; --mut:#8aa0c6;
+    --grad:linear-gradient(135deg,#6d83ff,#9b5cff 45%,#ff5ca8);
+    --grad2:linear-gradient(135deg,#39e6c3,#5ca8ff);
+    --line:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;
+    color:var(--ink);background:
+      radial-gradient(900px 500px at 12% -8%,rgba(109,131,255,.20),transparent 60%),
+      radial-gradient(700px 500px at 110% 10%,rgba(255,92,168,.16),transparent 55%),
+      var(--bg);
+    min-height:100%;overflow-x:hidden;
+  }
+  a{color:#9cb4ff;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:34px 20px 80px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:46px;height:46px;border-radius:14px;background:var(--grad);box-shadow:0 8px 30px rgba(155,92,255,.45);position:relative}
+  .logo::after{content:"";position:absolute;inset:8px;border-radius:8px;background:var(--bg);opacity:.55}
+  .logo::before{content:"⚡";position:absolute;inset:0;display:grid;place-items:center;font-size:20px;z-index:1}
+  h1{font-size:22px;margin:0;letter-spacing:.3px}
+  .sub{color:var(--mut);font-size:13px;margin-top:2px}
+  .pill{font-size:12px;color:var(--mut);border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:var(--panel2)}
+  .pill b{color:var(--ink)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0}
+  .stat{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px}
+  .stat .k{font-size:26px;font-weight:700;background:var(--grad2);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .l{color:var(--mut);font-size:12px;margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .card{position:relative;border:1px solid var(--line);border-radius:18px;padding:18px;background:linear-gradient(180deg,var(--panel),var(--panel2));overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;border-top:3px solid var(--ac,#6d83ff)}
+  .card:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  .card h3{margin:0 0 4px;font-size:16px}
+  .role{color:var(--mut);font-size:12px;margin-bottom:10px}
+  .caps{display:flex;flex-wrap:wrap;gap:6px}
+  .caps span{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:#cdd9f2}
+  .section-title{display:flex;align-items:center;gap:10px;margin:40px 0 16px}
+  .section-title h2{margin:0;font-size:18px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--grad2);box-shadow:0 0 14px #39e6c3}
+  table{width:100%;border-collapse:collapse;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px}
+  th{color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+  .badge{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+  .b1{color:#39e6c3;border-color:rgba(57,230,195,.4)}
+  .b2{color:#ffce6a;border-color:rgba(255,206,106,.4)}
+  .b3{color:#9cb4ff;border-color:rgba(156,180,255,.4)}
+  .run{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+  .run input,.run select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:11px 13px;border-radius:12px;flex:1;min-width:180px}
+  .run button{cursor:pointer;border:none;color:#fff;font-weight:600;padding:11px 20px;border-radius:12px;background:var(--grad);box-shadow:0 8px 24px rgba(155,92,255,.4)}
+  .run button:active{transform:scale(.98)}
+  #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(40px);opacity:0;background:var(--grad);color:#fff;padding:12px 20px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.5);transition:.35s;z-index:9}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  footer{color:var(--mut);font-size:12px;margin-top:48px;text-align:center}
+  .orb{position:fixed;border-radius:50%;filter:blur(60px);z-index:-1;opacity:.35}
+  .orb.a{width:340px;height:340px;background:#6d83ff;top:-60px;left:-60px}
+  .orb.b{width:300px;height:300px;background:#ff5ca8;bottom:-40px;right:-30px}
+</style>
+</head>
+<body>
+<div class="orb a"></div><div class="orb b"></div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>Hub Spot</h1>
+        <div class="sub">Agent Workforce × IXPANSION experiment platform</div>
+      </div>
+    </div>
+    <div class="pill">repo: <b>github.com/adjjvmorii26-png/agent-workforce</b></div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="k" id="s-agents">10</div><div class="l">Active agents</div></div>
+    <div class="stat"><div class="k">10</div><div class="l">Experiment ideas</div></div>
+    <div class="stat"><div class="k">1</div><div class="l">Central hub</div></div>
+    <div class="stat"><div class="k" id="s-status">ok</div><div class="l">Pipeline status</div></div>
+  </section>
+
+  <div class="section-title"><span class="dot"></span><h2>Agent Workforce</h2><span class="pill" id="filter-pill">click a card capability to filter</span></div>
+  <div class="grid" id="agents"></div>
+
+  <div class="section-title"><span class="dot"></span><h2>IXPANSION Experiments</h2></div>
+  <table>
+    <thead><tr><th>ID</th><th>Experiment</th><th>Phase</th><th>Status</th></tr></thead>
+    <tbody id="exp"></tbody>
+  </table>
+
+  <div class="section-title"><span class="dot"></span><h2>Run an experiment</h2></div>
+  <div class="run">
+    <select id="recipe">
+      <option value="summary">summary recipe</option>
+      <option value="X-01">X-01 recipe engine</option>
+      <option value="X-08">X-08 model bench</option>
+    </select>
+    <input id="goal" placeholder="Describe the experiment input…" />
+    <button id="go">Run with workforce</button>
+  </div>
+
+  <footer>Self-contained hub dashboard · no external requests · built by the workforce.</footer>
+</div>
+<div id="toast"></div>
+
+<script>
+const AGENTS = [
+  {n:"planner",r:"chief planner",c:["plan","planning","decompose"],ac:"#6d83ff"},
+  {n:"researcher",r:"research analyst",c:["research","fact-finding"],ac:"#39e6c3"},
+  {n:"coder",r:"implementer",c:["code","build","write"],ac:"#9b5cff"},
+  {n:"reviewer",r:"quality gate",c:["review","quality"],ac:"#ff5ca8"},
+  {n:"summarizer",r:"report writer",c:["summarize","report"],ac:"#ffce6a"},
+  {n:"designer",r:"UI & visualization designer",c:["design","html","dashboard"],ac:"#5ca8ff"},
+  {n:"qa",r:"test engineer",c:["test","verify"],ac:"#39e6c3"},
+  {n:"docsmith",r:"technical writer",c:["docs","readme"],ac:"#9cb4ff"},
+  {n:"critic",r:"adversarial critic",c:["redteam","risk"],ac:"#ff7a7a"},
+  {n:"devops",r:"release & CI engineer",c:["devops","deploy"],ac:"#b08bff"}
+];
+const EXP = [
+  ["X-01","Baseline recipe engine","Phase 1","b1"],
+  ["X-02","Recipe catalog (5 recipes)","Phase 1","b1"],
+  ["X-03","LLM-judge evaluation harness","Phase 1","b1"],
+  ["X-04","Recipe recommendation router","Phase 2","b2"],
+  ["X-05","Self-revising reports","Phase 2","b2"],
+  ["X-06","Feedback flywheel","Phase 2","b2"],
+  ["X-07","Multi-source synthesis","Phase 3","b3"],
+  ["X-08","Model/provider A/B bench","Phase 3","b3"],
+  ["X-09","Scheduled autopilot (CI)","Phase 3","b3"],
+  ["X-10","Public API + gallery","Phase 3","b3"]
+];
+const BADGE={b1:["done","b1"],b2:["planned","b2"],b3:["planned","b3"]};
+
+const agentsEl=document.getElementById("agents");
+const expEl=document.getElementById("exp");
+
+function renderAgents(filter){
+  agentsEl.innerHTML="";
+  AGENTS.filter(a=>!filter||a.c.includes(filter)).forEach(a=>{
+    const el=document.createElement("div");
+    el.className="card";el.style.setProperty("--ac",a.ac);
+    el.innerHTML=`<h3>${a.n}</h3><div class="role">${a.r}</div>
+      <div class="caps">${a.c.map(c=>`<span>${c}</span>`).join("")}</div>`;
+    el.onclick=()=>{ document.getElementById("filter-pill").textContent=
+        (filter===a.c[0]?`click a card capability to filter`:`filtered: ${a.c[0]}`);
+      renderAgents(filter===a.c[0]?null:a.c[0]); window.scrollTo({top:agentsEl.offsetTop-20,behavior:"smooth"}); };
+    agentsEl.appendChild(el);
+  });
+}
+EXP.forEach(e=>{
+  const [id,name,phase,b]=e; const [label,cls]=BADGE[b];
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td><b>${id}</b></td><td>${name}</td><td>${phase}</td><td><span class="badge ${cls}">${label}</span></td>`;
+  expEl.appendChild(tr);
+});
+renderAgents(null);
+
+document.getElementById("go").onclick=()=>{
+  const g=document.getElementById("goal").value||"(no input)";
+  toast(`Queued "${document.getElementById("recipe").value}" → ${g.slice(0,40)}`);
+};
+let t;function toast(m){const e=document.getElementById("toast");e.textContent=m;e.classList.add("show");clearTimeout(t);t=setTimeout(()=>e.classList.remove("show"),2600);}
+</script>
+</body>
+</html>

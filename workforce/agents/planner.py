@@ -20,6 +20,11 @@ class PlannerAgent(BaseAgent):
             '"description": "...", "depends_on": ["t1", ...]}]}\n'
             "- research: gather facts and sources from the web\n"
             "- code: produce the concrete deliverable (files, code, docs)\n"
+            "- design: build self-contained HTML/CSS/JS dashboards or UIs\n"
+            "- test: write/run QA tests and find coverage gaps\n"
+            "- docs: write documentation, READMEs, guides\n"
+            "- redteam: adversarial critique and risk analysis\n"
+            "- devops: releases, CI, deployment readiness\n"
             "- summarize: write the final report\n"
             "Use 3-6 tasks. IDs must be unique and depends_on must reference earlier ids."
         )
