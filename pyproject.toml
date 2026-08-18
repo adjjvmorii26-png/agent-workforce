@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "workforce"
+version = "0.1.0"
+description = "A finished, self-contained agent workforce: orchestrator, specialized agents, message bus, memory, tools, CLI, and HTTP API."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Workforce Contributors" }]
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+workforce = "workforce.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["workforce*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
