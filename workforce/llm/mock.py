@@ -56,6 +56,17 @@ class MockProvider:
             return self._summary(text)
         if "recruiter" in lower:
             return self._recruit(text)
+        if "evaluator" in lower:
+            return LLMResponse(
+                text=json.dumps(
+                    {
+                        "relevance": 88,
+                        "accuracy": 91,
+                        "structure": 85,
+                        "comments": "Solid deliverable; add sources for accuracy boost.",
+                    }
+                )
+            )
 
         return LLMResponse(text=f"[mock] processed request: {text[:200]}")
 

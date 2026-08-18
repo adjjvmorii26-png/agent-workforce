@@ -48,5 +48,15 @@ class TestEngine(unittest.TestCase):
             )
 
 
+class TestEvaluate(unittest.TestCase):
+    def test_mock_judge_scores(self):
+        from ixpansion.core.evaluate import evaluate_report
+
+        ev = evaluate_report("# Report\n\nbody", "goal", mock=True)
+        self.assertEqual(ev.relevance, 88)
+        self.assertEqual(ev.structure, 85)
+        self.assertTrue(0 <= ev.mean <= 100)
+
+
 if __name__ == "__main__":
     unittest.main()

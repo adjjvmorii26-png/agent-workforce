@@ -8,6 +8,7 @@ from pathlib import Path
 from .core.engine import Engine
 from .core.recipe import Recipe
 from .services.llm import make_provider
+from .core.evaluate import evaluate_report
 
 RECIPES = Path(__file__).parent / "content_output" / "recipes"
 REPORTS = Path(__file__).parent / "content_output" / "reports"
@@ -25,6 +26,12 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("recipes", help="list catalog")
     sub.add_parser("reports", help="list generated reports")
+
+    ev = sub.add_parser("evaluate", help="run a recipe and LLM-judge the report")
+    ev.add_argument("input", help="raw input text (quote it)")
+    ev.add_argument("--recipe", default="summary")
+    ev.add_argument("--mock", action="store_true")
+    ev.add_argument("--out", default=str(REPORTS))
 
     args = parser.parse_args(argv)
     if args.cmd == "recipes":
@@ -48,5 +55,10 @@ def main(argv: list[str] | None = None) -> int:
         recipe = Recipe.load(candidates[0])
 
     result = Engine(make_provider(mock=args.mock), output_dir=args.out).run(recipe, args.input)
+    if args.cmd == "evaluate":
+        report_text = Path(result.report_path).read_text(encoding="utf-8")
+        ev = evaluate_report(report_text, args.input, mock=args.mock)
+        print(f"[judge] relevance={ev.relevance:.0f} accuracy={ev.accuracy:.0f} structure={ev.structure:.0f} mean={ev.mean:.0f}")
+        print(f"[judge] comments: {ev.comments[:160]}")
     print(f"[{result.status}] {result.recipe} -> {result.report_path} ({result.steps} steps via {result.provider})")
     return 0
