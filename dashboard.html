@@ -95,6 +95,13 @@
     <tbody id="exp"></tbody>
   </table>
 
+  
+  <div class="section-title"><span class="dot"></span><h2>Revived organisms (reuse)</h2></div>
+  <table>
+    <thead><tr><th>Project</th><th>Path</th><th>Status</th></tr></thead>
+    <tbody id="revived"></tbody>
+  </table>
+
   <div class="section-title"><span class="dot"></span><h2>Run an experiment</h2></div>
   <div class="run">
     <select id="recipe">
@@ -160,6 +167,16 @@ EXP.forEach(e=>{
   expEl.appendChild(tr);
 });
 renderAgents(null);
+
+const REVIVED=[
+  ["GitHub Workspace Dashboard","/sdcard/.../github-workspace-dashboard.zip","revived"],
+  ["ixpansion github seed","/sdcard/Download/ixpansion_github_seed","revived"],
+  ["Morii","/sdcard/Download/Morii","revived"],
+  ["Notion","/sdcard/Download/Notion","revived"],
+  ["OpenClaw platform","/sdcard/Download/openclaw-2026.7.1-2","active"],
+];
+REVIVED.forEach(r=>{const tr=document.createElement("tr");tr.innerHTML=`<td><b>${r[0]}</b></td><td><code>${r[1]}</code></td><td><span class="badge b1">${r[2]}</span></td>`;document.getElementById("revived").appendChild(tr);});
+
 
 document.getElementById("go").onclick=()=>{
   const g=document.getElementById("goal").value||"(no input)";

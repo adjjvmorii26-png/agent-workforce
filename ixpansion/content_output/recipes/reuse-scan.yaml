@@ -1,0 +1,7 @@
+name: reuse-scan
+description: Revival + reuse plan for a dormant project path
+steps:
+  - name: Inventory
+    prompt: "Inspect the path: {input}. Summarize what exists, what's missing, and its likely purpose."
+  - name: Revival plan
+    prompt: "Propose how to 'mutate it back to life' and how the hub can reuse it (agent, recipe, dataset, or reference). {prev}"
