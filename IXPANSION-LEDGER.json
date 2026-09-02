@@ -1,0 +1,43 @@
+{
+  "issuer": "ixpansion",
+  "wave": 221,
+  "repo": "agent-workforce",
+  "stones_count": 4,
+  "stones": [
+    "BRIDGE-F152134B",
+    "BRIDGE-A3D147BC",
+    "BRIDGE-BDF86AB4",
+    "BRIDGE-A8E72153"
+  ],
+  "total_stones_in_constellation": 42,
+  "neighbors": [
+    "attention-labyrinth",
+    "auric-labyrinth",
+    "chronovore-archive",
+    "echotide-engine",
+    "geometric-anthology",
+    "glitch-cathedral",
+    "hyperfractal-relay",
+    "lexicon-chrysalis",
+    "metamorph-forge",
+    "multiself-engine",
+    "nebula-archive",
+    "neuroglyph-forge",
+    "nexus-observatory",
+    "omega-fractal-engine",
+    "ontoforge-singularity",
+    "paraconstruct-engine",
+    "parallax",
+    "parallax-engine",
+    "polychron-atlas",
+    "probability-engine",
+    "quantum-folio",
+    "quietus-array",
+    "semiotic-engine",
+    "sensorium-engine",
+    "solid-organism",
+    "topologic-alchemy"
+  ],
+  "return_path": "https://ixpansion.vercel.app/cross_repo_commune",
+  "seal": "communal"
+}
